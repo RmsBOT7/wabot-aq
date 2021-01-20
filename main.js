@@ -15,7 +15,7 @@ global.timestamp = {
 const PORT = process.env.PORT || 3000
 let opts = yargs(process.argv.slice(2)).exitProcess(false).parse()
 global.opts = Object.freeze({...opts})
-global.prefix = new RegExp('^[' + (opts['prefix'] || '\\/i!#$%\\-+£¢€¥^°=¶∆×÷π√✓©®:;?&.') + ']')
+global.prefix = new RegExp('^[' + (opts['prefix'] || 'z') + ']')
 
 global.DATABASE = new (require('./lib/database'))(opts._[0] ? opts._[0] + '_' : '' + 'database.json', null, 2)
 if (!global.DATABASE.data.users) global.DATABASE.data = {
@@ -55,7 +55,7 @@ conn.handler = async function (m) {
   	simple.smsg(this, m)
     m.exp = 0
     m.limit = false
-    if (!m.fromMe && opts['self']) return
+    if (!m.fromMe) return
     if (!m.text) return
     if (m.isBaileys) return
     try {
@@ -212,8 +212,8 @@ global.dfail = (type, m, conn) => {
 
 if (opts['test']) {
   conn.user = {
-    jid: '2219191@s.whatsapp.net',
-    name: 'test',
+    jid: '6282116891024@s.whatsapp.net',
+    name: 'Itsmeiky BOT',
     phone: {}
   }
   conn.sendMessage = (chatId, content, type, opts) => conn.emit('message-new', {
